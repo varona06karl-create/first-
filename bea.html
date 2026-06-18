@@ -71,57 +71,68 @@
         <p style="text-align: center; font-weight: bold; margin-top: 30px;">Your Forever & Always,</p>
     </div>
 
-    <script>
-        const container = document.getElementById('stars-container');
-        for(let i=0; i<150; i++) {
-            let s = document.createElement('div');
-            s.className = 'star-point';
-            s.style.width = s.style.height = Math.random() * 2 + 'px';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.animationDelay = Math.random() * 3 + 's';
-            container.appendChild(s);
-        }
-        function spawnShootingStar() {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
-            star.style.top = Math.random() * 20 + 'vh';
-            star.style.left = Math.random() * 50 + 'vw';
-            star.style.animation = `shoot ${Math.random() * 1.5 + 1}s linear`;
-            document.body.appendChild(star);
-            setTimeout(() => { star.remove(); }, 2000);
-        }
-        setInterval(spawnShootingStar, 2000);
+   <script>
+    // --- STARS BACKGROUND CODE ---
+    const container = document.getElementById('stars-container');
+    for(let i=0; i<150; i++) {
+        let s = document.createElement('div');
+        s.className = 'star-point';
+        s.style.width = s.style.height = Math.random() * 2 + 'px';
+        s.style.top = Math.random() * 100 + 'vh';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(s);
+    }
+    
+    function spawnShootingStar() {
+        const star = document.createElement('div');
+        star.className = 'shooting-star';
+        star.style.top = Math.random() * 20 + 'vh';
+        star.style.left = Math.random() * 50 + 'vw';
+        star.style.animation = `shoot ${Math.random() * 1.5 + 1}s linear`;
+        document.body.appendChild(star);
+        setTimeout(() => { star.remove(); }, 2000);
+    }
+    setInterval(spawnShootingStar, 2000);
 
-        const links = ['https://i.imgur.com/kj95V7x.jpeg', 'https://i.imgur.com/6MBJlbI.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/q5qERky.jpeg', 'https://i.imgur.com/FYMAEI1.jpeg', 'https://i.imgur.com/jNkbC0M.jpeg', 'https://i.imgur.com/LhxdwbC.jpeg', 'https://i.imgur.com/qBjqHOs.jpeg', 'https://i.imgur.com/Wmo51XS.jpeg', 'https://i.imgur.com/viZHUhD.jpeg', 'https://i.imgur.com/FoW32ZC.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/e0QuJFK.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/fXw1VFO.jpeg', 'https://i.imgur.com/u6X9j06.jpeg', 'https://i.imgur.com/D5whQ9z.jpeg', 'https://i.imgur.com/tL2fyy5.jpeg', 'https://i.imgur.com/H9NFOR2.jpeg', 'https://i.imgur.com/dbtr05L.jpeg', 'https://i.imgur.com/WVOgXP1.jpeg', 'https://i.imgur.com/viZHUhD.jpeg', 'https://i.imgur.com/IWzgfbP.jpeg', 'https://i.imgur.com/6MBJlbI.jpeg'];
+    // --- MUSIC & LOGIC ---
+    const bgMusic = document.getElementById('bgMusic');
+    // Force preloading for iOS
+    bgMusic.load(); 
 
-        function checkAnswer() {
-            if(document.getElementById('answer').value == "9") {
-                document.getElementById('quiz-box').style.display = 'none';
-                document.getElementById('envelope-meteor').style.display = 'block';
-                setTimeout(() => {
-                    document.body.classList.add('shake-screen');
-                    document.getElementById('envelope-meteor').style.display = 'none';
-                    document.getElementById('envelope-container').style.display = 'block';
-                }, 2000);
-            } else { alert("Mali Love! Try ulit."); }
-        }
+    const links = ['https://i.imgur.com/kj95V7x.jpeg', 'https://i.imgur.com/6MBJlbI.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/q5qERky.jpeg', 'https://i.imgur.com/FYMAEI1.jpeg', 'https://i.imgur.com/jNkbC0M.jpeg', 'https://i.imgur.com/LhxdwbC.jpeg', 'https://i.imgur.com/qBjqHOs.jpeg', 'https://i.imgur.com/Wmo51XS.jpeg', 'https://i.imgur.com/viZHUhD.jpeg', 'https://i.imgur.com/FoW32ZC.jpeg', 'https://i.imgur.com/e0QuJFK.jpeg', 'https://i.imgur.com/fXw1VFO.jpeg', 'https://i.imgur.com/u6X9j06.jpeg', 'https://i.imgur.com/D5whQ9z.jpeg', 'https://i.imgur.com/tL2fyy5.jpeg', 'https://i.imgur.com/H9NFOR2.jpeg', 'https://i.imgur.com/dbtr05L.jpeg', 'https://i.imgur.com/WVOgXP1.jpeg', 'https://i.imgur.com/IWzgfbP.jpeg'];
 
-        function openEnvelope() {
-            document.getElementById('env-click').classList.add('open');
-            document.getElementById('bgMusic').play();
-            setTimeout(() => { document.getElementById('envelope-container').style.display = 'none'; }, 800);
-            
-            const picContainer = document.getElementById('pics-container');
-            links.forEach((link, i) => { 
-                const img = document.createElement('img'); img.src = link;
-                picContainer.appendChild(img);
-                // Bilis na 200ms para sumabay sa kanta
-                setTimeout(() => { img.classList.add('active'); }, i * 200);
-            });
-            // Message lalabas pagkatapos ng lahat ng pics
-            setTimeout(() => { document.getElementById('scroll').classList.add('show-msg'); }, links.length * 200 + 500);
-        }
-    </script>
+    function checkAnswer() {
+        if(document.getElementById('answer').value == "9") {
+            document.getElementById('quiz-box').style.display = 'none';
+            document.getElementById('envelope-meteor').style.display = 'block';
+            setTimeout(() => {
+                document.body.classList.add('shake-screen');
+                document.getElementById('envelope-meteor').style.display = 'none';
+                document.getElementById('envelope-container').style.display = 'block';
+            }, 2000);
+        } else { alert("Mali Love! Try ulit."); }
+    }
+
+    function openEnvelope() {
+        // 1. Play Music with Error Handling
+        bgMusic.play().catch(e => {
+            console.log("Audio play failed, retrying...");
+        });
+        
+        document.getElementById('env-click').classList.add('open');
+        setTimeout(() => { document.getElementById('envelope-container').style.display = 'none'; }, 800);
+        
+        const picContainer = document.getElementById('pics-container');
+        links.forEach((link, i) => { 
+            const img = document.createElement('img'); 
+            img.src = link;
+            picContainer.appendChild(img);
+            setTimeout(() => { img.classList.add('active'); }, i * 200);
+        });
+        
+        setTimeout(() => { document.getElementById('scroll').classList.add('show-msg'); }, links.length * 200 + 500);
+    }
+</script>
 </body>
 </html>
