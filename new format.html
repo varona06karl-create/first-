@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #000; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; height: 100vh; }
+        .space { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: -2; }
+        
+        /* Stars */
+        .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .star-point { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle 3s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .shooting-star { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; box-shadow: 0 0 15px 4px #fff; opacity: 0; pointer-events: none; }
+        @keyframes shoot { 0% { transform: translate(0, 0) rotate(45deg); opacity: 1; } 100% { transform: translate(800px, 800px) rotate(45deg); opacity: 0; } }
+
+        /* Pics - Optimized for Mobile */
+        .pics-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 10px; margin-top: 10px; z-index: 99; width: 100%; }
+        .pics-container img { width: 70px; height: 70px; object-fit: cover; border: 2px solid #ffd700; border-radius: 8px; opacity: 0; transform: scale(0); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .pics-container img.active { opacity: 1; transform: scale(1); }
+
+        /* Quiz & Envelope */
+        #quiz-box { z-index: 20; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; padding: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 117, 140, 0.3); }
+        input { width: 180px; padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 2px solid #ff758c; background: rgba(0,0,0,0.3); color: white; text-align: center; font-size: 16px; display: block; margin: 0 auto 20px auto; }
+        button { padding: 12px 25px; background: #ff758c; border: none; color: white; border-radius: 10px; cursor: pointer; font-size: 16px; }
+
+        #envelope-meteor { position: absolute; top: -150px; left: -150px; display: none; z-index: 10; }
+        .impact-anim { animation: crash 2s ease-in forwards; }
+        @keyframes crash { 0% { top: -150px; left: -150px; } 100% { top: 45%; left: 45%; } }
+        .shake-screen { animation: shake 0.6s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-10px, 10px); } 50% { transform: translate(10px, -10px); } }
+
+        .mail-graphic { width: 120px; height: 80px; background: #d35400; border: 3px solid #e67e22; border-radius: 5px; position: relative; }
+        .flap { position: absolute; top: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-top: 40px solid #e67e22; transition: 1s; transform-origin: top; }
+        .open .flap { transform: rotateX(180deg); }
+        #envelope-container { display: none; position: absolute; top: 45%; left: 45%; cursor: pointer; animation: float 3s infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        #scroll { display: none; background: #fffaf0; color: #2c3e50; width: 80%; max-width: 320px; padding: 20px; border: 3px double #d4af37; border-radius: 10px; position: fixed; top: 50%; left: 50%; z-index: 100; max-height: 70vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .show-msg { display: block !important; animation: slideUp 0.8s forwards; }
+        @keyframes slideUp { 0% { transform: translate(-50%, -30%) scale(0.9); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="space"></div>
+    <div class="stars-bg" id="stars-container"></div>
+    <audio id="bgMusic" src="https://files.catbox.moe/ssgsb5.mp3"></audio>
+
+    <div class="pics-container" id="pics-container"></div>
+
+    <div id="quiz-box">
+        <h1>Ilang buwan na tayo, Love?</h1>
+        <input type="number" id="answer" placeholder="Type number...">
+        <button onclick="checkAnswer()">Open Surprise</button>
+    </div>
+
+    <div id="envelope-meteor" class="impact-anim"><div class="mail-graphic"><div class="flap"></div></div></div>
+    
+    <div id="envelope-container" onclick="openEnvelope()"><div class="mail-graphic" id="env-click"><div class="flap"></div></div></div>
+
+    <div id="scroll">
+         <h2 style="text-align:center; color: #8b0000; font-family: 'Dancing Script', cursive;">Happy 9 Monthsary, Loveee! ❤️</h2>
+        <p>Ang bilis talaga ng panahon no? Parang kailan lang nung nagsimula tayo, tapos heto na, 9 months na tayong nagmamahalan, nagkukulitan, at nag-ggrow together. Alam mo naman kung gaano kita kamahal, sobrang mahal kita! Ikaw lang talaga palagi ang nasa isip ko.</p>
+        <p>Thank you kasi lagi kang nandyan, thank you sa pag-aalaga at pagmamahal mo sa akin. Grabe, sobrang swerte ko na ikaw ang kasama ko. Alam ko minsan makulit ako o may mga bagay na hindi tayo nagkakaintindihan, pero gusto ko lang malaman mo na hinding-hindi magbabago ang pagmamahal ko sayo. Ang sarap sa feeling na komportable tayo sa isa't isa.</p>
+        <p>Thank you kasi ikaw ang naging pahinga ko, ikaw ang source ng happiness ko, at ikaw ang safe place ko. Sa dami ng stress ko sa school at sa pagod ko araw-araw, ikaw ang palaging nagpapa-smile sa akin. Sobrang naa-appreciate ko lahat ng effort mo, yung pag-aalala mo, at lahat ng oras na binibigay mo sa akin.</p>
+        <p>Hindi ko man palaging nasasabi, pero sobrang saya ko na dumating ka sa buhay ko. Ang dami nang nangyari nitong mga nakaraang buwan, pero isa sa pinakamagandang nangyari sa akin ay yung makilala at mahalin ka. Kahit simpleng kwentuhan lang natin o kulitan sa chat, napapasaya mo na agad ako. Ikaw yung taong gusto kong sabihan ng lahat ng nangyari sa araw ko, mapa-masaya man o nakakapagod.</p>
+        <p>Alam mo, minsan naiisip ko kung gaano ako kaswerte kasi ikaw yung naging partner ko. Kasi sa dami ng tao sa mundo, ikaw yung naging kasama ko sa mga araw na masaya ako at pati sa mga araw na hindi ako okay. Salamat kasi lagi mong pinaparamdam na hindi ako nag-iisa.</p>
+        <p>Kahit anong mangyari, dito lang ako sa tabi mo. I promise na ako ang magiging home mo. Lagi kitang pipiliin at mamahalin. Hindi man tayo perpekto, pero alam kong kaya nating lampasan lahat basta magkasama tayo.</p>
+        <p>Happy 9 monthsary ulit, love! Maraming salamat sa lahat. Sana mas dumami pa yung memories natin at mas marami pa tayong pagsasamahan. Mahal na mahal kita, at hinding-hindi ako magsasawang mahalin ka. ❤️</p>
+        <p style="text-align: center; font-weight: bold; margin-top: 30px;">Your Forever & Always,</p>
+    </div>
+
+    <script>
+        const container = document.getElementById('stars-container');
+        for(let i=0; i<150; i++) {
+            let s = document.createElement('div');
+            s.className = 'star-point';
+            s.style.width = s.style.height = Math.random() * 2 + 'px';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDelay = Math.random() * 3 + 's';
+            container.appendChild(s);
+        }
+        function spawnShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.top = Math.random() * 20 + 'vh';
+            star.style.left = Math.random() * 50 + 'vw';
+            star.style.animation = `shoot ${Math.random() * 1.5 + 1}s linear`;
+            document.body.appendChild(star);
+            setTimeout(() => { star.remove(); }, 2000);
+        }
+        setInterval(spawnShootingStar, 2000);
+
+        const links = ['https://i.imgur.com/kj95V7x.jpeg', 'https://i.imgur.com/6MBJlbI.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/q5qERky.jpeg', 'https://i.imgur.com/FYMAEI1.jpeg', 'https://i.imgur.com/jNkbC0M.jpeg', 'https://i.imgur.com/LhxdwbC.jpeg', 'https://i.imgur.com/qBjqHOs.jpeg', 'https://i.imgur.com/Wmo51XS.jpeg', 'https://i.imgur.com/viZHUhD.jpeg', 'https://i.imgur.com/FoW32ZC.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/e0QuJFK.jpeg', 'https://i.imgur.com/WEfgj5w.jpeg', 'https://i.imgur.com/fXw1VFO.jpeg', 'https://i.imgur.com/u6X9j06.jpeg', 'https://i.imgur.com/D5whQ9z.jpeg', 'https://i.imgur.com/tL2fyy5.jpeg', 'https://i.imgur.com/H9NFOR2.jpeg', 'https://i.imgur.com/dbtr05L.jpeg', 'https://i.imgur.com/WVOgXP1.jpeg', 'https://i.imgur.com/viZHUhD.jpeg', 'https://i.imgur.com/IWzgfbP.jpeg', 'https://i.imgur.com/6MBJlbI.jpeg'];
+
+        function checkAnswer() {
+            if(document.getElementById('answer').value == "9") {
+                document.getElementById('quiz-box').style.display = 'none';
+                document.getElementById('envelope-meteor').style.display = 'block';
+                setTimeout(() => {
+                    document.body.classList.add('shake-screen');
+                    document.getElementById('envelope-meteor').style.display = 'none';
+                    document.getElementById('envelope-container').style.display = 'block';
+                }, 2000);
+            } else { alert("Mali Love! Try ulit."); }
+        }
+
+        function openEnvelope() {
+            document.getElementById('env-click').classList.add('open');
+            document.getElementById('bgMusic').play();
+            setTimeout(() => { document.getElementById('envelope-container').style.display = 'none'; }, 800);
+            
+            const picContainer = document.getElementById('pics-container');
+            links.forEach((link, i) => { 
+                const img = document.createElement('img'); img.src = link;
+                picContainer.appendChild(img);
+                // Bilis na 200ms para sumabay sa kanta
+                setTimeout(() => { img.classList.add('active'); }, i * 200);
+            });
+            // Message lalabas pagkatapos ng lahat ng pics
+            setTimeout(() => { document.getElementById('scroll').classList.add('show-msg'); }, links.length * 200 + 500);
+        }
+    </script>
+</body>
+</html>
