@@ -119,9 +119,11 @@
 
     function openEnvelope() {
         // 1. Play Music with Error Handling
-        bgMusic.play().catch(e => {
-            console.log("Audio play failed, retrying...");
-        });
+       bgMusic.play().catch(e => {
+    console.log("Audio play failed, waiting for user...");
+    // Optional: Lagyan ng prompt para pindutin ng user ang screen
+    alert("Please tap the screen to play music!");
+});
         
         document.getElementById('env-click').classList.add('open');
         setTimeout(() => { document.getElementById('envelope-container').style.display = 'none'; }, 800);
